@@ -1,7 +1,7 @@
 //
 // # SimpleServer
 //
-// A simple chat server using Socket.IO, Express, and Async.
+// A simple chatBot server using Socket.IO, Express, and Body-Parser e Request.
 //
 var http = require('http');
 var path = require('path');
@@ -12,10 +12,6 @@ var express = require('express');
 var bodyParser = require('body-parser')
 var request = require('request')
 //
-// ## SimpleServer `SimpleServer(obj)`
-//
-// Creates a new instance of SimpleServer with the following options:
-//  * `port` - The HTTP port to listen on. If `process.env.PORT` is set, _it overrides this value_.
 //
 var router = express();
 var server = http.createServer(router);
