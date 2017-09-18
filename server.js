@@ -46,7 +46,7 @@ router.post('/webhook',function(req,res){
       // percorrendo as mensagens
       entry.messaging.forEach(function(event){
         if(event.message){
-          console.log(event.message);
+          constructMessage(event)
         }
       })
       
@@ -57,7 +57,68 @@ router.post('/webhook',function(req,res){
 })
 //   token :
 
+function constructMessage(event){
+  var message = event.message;
+  var senderID = event.sender.id;
+  // Bot answer 
+  var messageId = message.mid;
+  var messageText = message.text;
+  var attachments = message.attachments;
+  
+  if(messageText){
+    switch (messageText) {
+      case 'eae':
+        sendTextMessage(senderID, 'oi, tudo bem?')
+        break;
+      case 'xau':
+        sendTextMessage(senderID, 'Tchau, valeu.')
+        break;
+      default:
+        // code
+        sendTextMessage(senderID, 'Obrigado e volte sempre.')
+        
+    }
+  }else if(attachments){
+    console.log('recebi anexos!!')
+  }
+  
+}
 
+function sendTextMessage(recipientId,messageText){
+  var messageData = {
+    recipient:{
+      id: recipientId
+    },
+    
+    message:{
+      text: messageText
+    }
+  }
+  
+  callSendAPI(messageData)
+}
+
+function callSendAPI(messageData){
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: { access_token: 'EAADwfhlIoLABALDcesn63Sk0Yvb3Y3rcYYPejr43fNJeO1kbZBK2cuiPGHAVXdtsHL4VHlKCmfctZBY82On0wPko1QSZCYjJUPK9hVvAuRM8WDqAhyn4bvhCvWpXKoqtEZAjZCqJDdnNPSz3QsZCYeKyZA5t3nw99nZCZCHZBJPZCXukgAaYJDUhewk' },
+    method: 'POST',
+    json: messageData
+  
+    
+  },function(error,response,body){
+    if(!error && response.statusCode == 200){
+      
+      console.log("Mensagem enviada com sucesso...")
+      var recipientId = body.recipient_id;
+      var messageId = body.message_id;
+      
+    }else{
+      console.log('Mensagem não enviada...')
+    }
+  })
+  
+}
 
 server.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function(){
   var addr = server.address();
