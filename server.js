@@ -47,6 +47,16 @@ router.post('/webhook',function(req,res){
       entry.messaging.forEach(function(event){
         if(event.message){
           constructMessage(event)
+        }else{
+          if(event.postback && event.postback.payload){
+            console.log(event.postback.payload)
+            switch(event.postback.payload){
+              case 'clicou_comecar':
+                sendTextMessage(event.sender.id,"Como posso te ajudar? Escolha algum ministério abaixo:")
+                sendMenu(event.sender.id)
+                break;
+            }
+          }
         }
       })
       
@@ -68,7 +78,8 @@ function constructMessage(event){
   if(messageText){
     switch (messageText) {
       case 'eae':
-        sendTextMessage(senderID, 'oi, tudo bem?')
+        sendTextMessage(senderID, 'Como posso te ajudar?')
+        sendMenu(senderID)
         break;
       case 'xau':
         sendTextMessage(senderID, 'Tchau, valeu.')
@@ -97,6 +108,36 @@ function sendTextMessage(recipientId,messageText){
   
   callSendAPI(messageData)
 }
+
+function sendMenu(recipientId){
+  var messageData = {
+    recipient:{
+      id: recipientId
+    },
+    
+    message:{
+      attachment: {
+        type: 'template',
+        payload: {
+          template_type: "button",
+          text: 'O que você procura?',
+          buttons: [
+            {
+              type: 'web_url',
+              url: 'www.google.com',
+              title: 'Acesse nosso site!'
+            },
+          ]
+        }
+        
+      }
+      
+    }
+  }
+  
+  callSendAPI(messageData)
+}
+
 
 function callSendAPI(messageData){
   request({
