@@ -1,0 +1,14 @@
+{
+  "name": "tempochatbot",
+  "description": "A chatbot app",
+  "version": "1.0.0",
+  "engines": {
+    "node": "6.11.2",
+    "npm": "3.10.10"
+  },
+  "dependencies": {
+    "express": "4.15.2",
+    "body-parser": "1.18.1",
+    "request": "2.81.0"
+  }
+}

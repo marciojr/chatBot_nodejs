@@ -1,4 +1,4 @@
-//
+﻿//
 // # SimpleServer
 //
 // A simple chatBot server using Socket.IO, Express, and Body-Parser e Request.
@@ -6,8 +6,6 @@
 var http = require('http');
 var path = require('path');
 
-
-var socketio = require('socket.io');
 var express = require('express');
 var bodyParser = require('body-parser')
 var request = require('request')
@@ -15,10 +13,8 @@ var request = require('request')
 //
 var router = express();
 var server = http.createServer(router);
-var io = socketio.listen(server);
 
-
-router.use(express.static(path.resolve(__dirname, 'client')));
+router.use(express.static(path.resolve(__dirname, 'chatBot_nodejs')));
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({extended: false}))
 
